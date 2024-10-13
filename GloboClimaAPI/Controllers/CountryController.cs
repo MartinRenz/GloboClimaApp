@@ -57,17 +57,24 @@ namespace GloboClimaAPI.Controllers
         [HttpGet("/code/{code}")]
         public async Task<IActionResult> GetCountryByCode(string code)
         {
-            var country = await _countryService.GetCountryByCodeAsync(code);
+            try {
+                var country = await _countryService.GetCountryByCodeAsync(code);
 
-            if (country == null)
-            {
-                _logger.LogWarning($"País não encontrado. Código: {code}");
-                return NotFound();
+                if (country == null)
+                {
+                    _logger.LogWarning($"País não encontrado. Código: {code}");
+                    return NotFound();
+                }
+
+                _logger.LogInformation($"Requisição efetuada com sucesso. Código: {code}");
+
+                return Ok(country);
             }
-
-            _logger.LogInformation($"Requisição efetuada com sucesso. Código: {code}");
-
-            return Ok(country);
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exceção: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }
