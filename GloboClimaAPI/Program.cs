@@ -8,8 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
 builder.Services.AddHttpClient<CountryService>();
+builder.Services.AddHttpClient<WeatherService>();
+
 builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<IWeatherService, WeatherService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
