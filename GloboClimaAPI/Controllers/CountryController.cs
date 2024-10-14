@@ -97,7 +97,7 @@ namespace GloboClimaAPI.Controllers
         /// <summary>
         /// Busca um país favorito.
         /// </summary>
-        [HttpGet("favorite/{id}")]
+        [HttpGet("/favorite/{id}")]
         [Authorize]
         public async Task<IActionResult> GetFavoriteCountry(int id)
         {
