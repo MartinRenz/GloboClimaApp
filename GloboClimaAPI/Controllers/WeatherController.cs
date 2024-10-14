@@ -1,4 +1,6 @@
 ﻿using GloboClimaAPI.Interfaces;
+using GloboClimaAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GloboClimaAPI.Controllers
@@ -40,6 +42,78 @@ namespace GloboClimaAPI.Controllers
 
                 _logger.LogInformation($"Requisição efetuada com sucesso. Cidade: {name}");
                 return Ok(weather);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exceção: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Busca todos os climas favoritos.
+        /// </summary>
+        [HttpGet("/city/favorite")]
+        [Authorize]
+        public async Task<IActionResult> GetAllFavoriteWeather()
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exceção: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Busca um clima favorito.
+        /// </summary>
+        [HttpGet("/city/favorite/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetFavoriteWeather(int id)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exceção: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Salva um novo clima favorito.
+        /// </summary>
+        [HttpPost("/city/favorite")]
+        [Authorize]
+        public async Task<IActionResult> SaveFavoriteWeather([FromBody] Weather body)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exceção: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deleta um clima favorito.
+        /// </summary>
+        [HttpDelete("/city/favorite/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteFavoriteWeather(int id)
+        {
+            try
+            {
+                return Ok();
             }
             catch (Exception ex)
             {

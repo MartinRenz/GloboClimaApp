@@ -1,4 +1,6 @@
 ﻿using GloboClimaAPI.Interfaces;
+using GloboClimaAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GloboClimaAPI.Controllers
@@ -66,6 +68,78 @@ namespace GloboClimaAPI.Controllers
                 _logger.LogInformation($"Requisição efetuada com sucesso. Código: {code}");
 
                 return Ok(country);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exceção: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Busca todos os países favoritos.
+        /// </summary>
+        [HttpGet("/favorite")]
+        [Authorize]
+        public async Task<IActionResult> GetAllFavoriteCountries()
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exceção: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Busca um país favorito.
+        /// </summary>
+        [HttpGet("favorite/{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetFavoriteCountry(int id)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exceção: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Salva um novo país favorito.
+        /// </summary>
+        [HttpPost("/favorite")]
+        [Authorize]
+        public async Task<IActionResult> SaveFavoriteCountry([FromBody] Country body)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Exceção: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deleta um país favorito.
+        /// </summary>
+        [HttpDelete("/favorite/{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteFavoriteCountry(int id)
+        {
+            try
+            {
+                return Ok();
             }
             catch (Exception ex)
             {
