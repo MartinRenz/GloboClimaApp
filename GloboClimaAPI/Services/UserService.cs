@@ -1,12 +1,10 @@
-﻿using GloboClimaAPI.Models;
-using GloboClimaAPI.Interfaces;
-using System.Text.Json;
-using Amazon.DynamoDBv2.DataModel;
+﻿using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
-using GloboClimaAPI.Controllers;
+using GloboClimaAPI.Interfaces;
+using GloboClimaAPI.Models;
 using System.Security.Cryptography;
 using System.Text;
-using System.Security.Claims;
+using System.Text.Json;
 
 namespace GloboClimaAPI.Services
 {

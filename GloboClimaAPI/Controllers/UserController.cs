@@ -1,10 +1,6 @@
-﻿using Amazon.DynamoDBv2.DataModel;
-using GloboClimaAPI.Interfaces;
+﻿using GloboClimaAPI.Interfaces;
 using GloboClimaAPI.Models;
-using GloboClimaAPI.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
 
 namespace GloboClimaAPI.Controllers
 {

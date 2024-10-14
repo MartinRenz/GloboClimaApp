@@ -1,7 +1,4 @@
 ﻿using GloboClimaAPI.Interfaces;
-using GloboClimaAPI.Models;
-using GloboClimaAPI.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GloboClimaAPI.Controllers

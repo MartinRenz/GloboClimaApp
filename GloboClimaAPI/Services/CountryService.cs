@@ -1,12 +1,6 @@
 ﻿using GloboClimaAPI.Interfaces;
 using GloboClimaAPI.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Metrics;
-using System.Net.Http;
-using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace GloboClimaAPI.Services
 {

@@ -1,6 +1,4 @@
-﻿using GloboClimaAPI.Models;
-
-namespace GloboClimaAPI.Interfaces
+﻿namespace GloboClimaAPI.Interfaces
 {
     public interface IUserService
     {
