@@ -1,25 +1,20 @@
 ﻿using GloboClimaAPI.Interfaces;
 using GloboClimaAPI.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics.Metrics;
-using System.Net.Http;
-using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace GloboClimaAPI.Services
 {
     public class WeatherService : IWeatherService
     {
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
         private const string baseUrl = "https://api.openweathermap.org/data/2.5/";
-        private const string token = "";
 
-        public WeatherService(HttpClient httpClient)
+        public WeatherService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -31,6 +26,8 @@ namespace GloboClimaAPI.Services
             {
                 if (string.IsNullOrEmpty(name))
                     throw new Exception("Não foi digitado nenhuma cidade.");
+
+                var token = _configuration["Token:WeatherAPI"];
 
                 var response = await _httpClient.GetAsync($"{baseUrl}weather?q={name}&units=metric&appid={token}");
                 response.EnsureSuccessStatusCode();

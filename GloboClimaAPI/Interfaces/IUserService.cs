@@ -4,7 +4,7 @@ namespace GloboClimaAPI.Interfaces
 {
     public interface IUserService
     {
-        Task<User?> LoginAsync(string login, string password);
-        Task<User?> SubscribeAsync(string login, string password);
+        Task<string> LoginAsync(string login, string password);
+        Task<string> SubscribeAsync(string login, string password);
     }
 }

@@ -1,9 +1,7 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
-using Amazon.Extensions.NETCore.Setup;
 using GloboClimaAPI.Interfaces;
 using GloboClimaAPI.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
@@ -35,6 +33,8 @@ builder.Services.AddSwaggerGen(c =>
 var awsOption = builder.Configuration.GetAWSOptions(); 
 builder.Services.AddDefaultAWSOptions(awsOption);
 builder.Services.AddAWSService<IAmazonDynamoDB>();
+
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
 var app = builder.Build();
 
