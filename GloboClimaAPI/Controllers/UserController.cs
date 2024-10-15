@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GloboClimaAPI.Controllers
 {
     /// <summary>
-    /// Controlador para gerenciar operações relacionadas a países.
+    /// Controlador para gerenciar operações relacionadas ao usuário.
     /// </summary>
     [Route("api/user")]
     [ApiController]

@@ -18,46 +18,46 @@ namespace GloboClimaAPI.Services
         /// <summary>
         /// Busca países através do nome de forma assíncrona.
         /// </summary>
-        public async Task<Country?> GetCountryByNameAsync(string name)
+        /// <param name="name">O nome do país a ser buscado.</param>
+        /// <returns>Retorna o país encontrado ou exceção.</returns>
+        public async Task<Country> GetCountryByName(string name)
         {
             try
             {
                 if (string.IsNullOrEmpty(name))
-                    throw new Exception("Não foi digitado nenhum código.");
+                    throw new ArgumentException("O parâmetro nome não contém valor.");
 
                 var response = await _httpClient.GetAsync($"{baseUrl}name/{name}");
+
                 response.EnsureSuccessStatusCode();
 
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var countries = JsonSerializer.Deserialize<List<Country>>(responseContent);
 
-                if (countries == null || !countries.Any())
-                {
-                    throw new Exception("Não foi encontrado nenhum país.");
-                }
-
-                var country = countries.FirstOrDefault();
+                var country = countries?.FirstOrDefault() ?? throw new Exception("Não foi encontrado nenhum país com o nome informado.");
 
                 return country;
             }
-            catch (HttpRequestException httpEx)
+            catch (HttpRequestException)
             {
-                throw new Exception($"Erro na comunicação com a API pública. {httpEx.Message}");
+                throw new Exception($"Erro na comunicação com a API externa.");
             }
-            catch (JsonException jsonEx)
+            catch (JsonException)
             {
-                throw new Exception($"Erro ao tratar o retorno da API pública. {jsonEx.Message}");
+                throw new Exception($"Erro ao processar os dados retornados pela API externa.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception($"Erro inesperado. {ex.Message}");
+                throw new Exception($"Erro inesperado ao buscar país.");
             }
         }
 
         /// <summary>
         /// Busca países através do código de forma assíncrona.
         /// </summary>
-        public async Task<Country?> GetCountryByCodeAsync(string code)
+        /// <param name="code">O código do país a ser buscado.</param>
+        /// <returns>Retorna o país encontrado ou exceção.</returns>
+        public async Task<Country> GetCountryByCode(string code)
         {
             try
             {
@@ -65,31 +65,27 @@ namespace GloboClimaAPI.Services
                     throw new Exception("Não foi digitado nenhum código.");
 
                 var response = await _httpClient.GetAsync($"{baseUrl}alpha/{code}");
+
                 response.EnsureSuccessStatusCode();
 
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var countries = JsonSerializer.Deserialize<List<Country>>(responseContent);
 
-                if (countries == null || !countries.Any())
-                {
-                    throw new Exception("Não foi encontrado nenhum país.");
-                }
-
-                var country = countries.FirstOrDefault();
+                var country = countries?.FirstOrDefault() ?? throw new Exception("Não foi encontrado nenhum país com o código informado.");
 
                 return country;
             }
-            catch (HttpRequestException httpEx)
+            catch (HttpRequestException)
             {
-                throw new Exception($"Erro na comunicação com a API pública. {httpEx.Message}");
+                throw new Exception($"Erro na comunicação com a API pública.");
             }
-            catch (JsonException jsonEx)
+            catch (JsonException)
             {
-                throw new Exception($"Erro ao tratar o retorno da API pública. {jsonEx.Message}");
+                throw new Exception($"Erro ao tratar o retorno da API pública.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception($"Erro inesperado. {ex.Message}");
+                throw new Exception($"Erro inesperado.");
             }
         }
     }

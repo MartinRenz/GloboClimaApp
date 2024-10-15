@@ -4,7 +4,7 @@ namespace GloboClimaAPI.Interfaces
 {
     public interface ICountryService
     {
-        Task<Country?> GetCountryByNameAsync(string name);
-        Task<Country?> GetCountryByCodeAsync(string code);
+        Task<Country> GetCountryByName(string name);
+        Task<Country> GetCountryByCode(string code);
     }
 }

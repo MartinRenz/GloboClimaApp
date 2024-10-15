@@ -7,6 +7,9 @@ namespace GloboClimaAPI.Models
         [JsonPropertyName("name")]
         public Name? Name { get; set; }
 
+        [JsonPropertyName("cca2")]
+        public string? Cca2 { get; set; }
+
         [JsonPropertyName("currencies")]
         public Dictionary<string, Currency>? Currencies { get; set; }
 
@@ -22,14 +25,20 @@ namespace GloboClimaAPI.Models
         [JsonPropertyName("languages")]
         public Dictionary<string, string>? Languages { get; set; }
 
+        [JsonPropertyName("translations")]
+        public Translations? Translations { get; set; }
+
         [JsonPropertyName("latlng")]
         public List<double>? Latlng { get; set; }
 
+        [JsonPropertyName("area")]
+        public double Area { get; set; }
+
         [JsonPropertyName("population")]
-        public int? Population { get; set; }
+        public long Population { get; set; }
 
         [JsonPropertyName("flags")]
-        public Flag? Flags { get; set; }
+        public Flags? Flags { get; set; }
     }
 
     public class Name
@@ -39,18 +48,6 @@ namespace GloboClimaAPI.Models
 
         [JsonPropertyName("official")]
         public string? Official { get; set; }
-
-        [JsonPropertyName("nativeName")]
-        public Dictionary<string, NativeName>? NativeName { get; set; }
-    }
-
-    public class NativeName
-    {
-        [JsonPropertyName("official")]
-        public string? Official { get; set; }
-
-        [JsonPropertyName("common")]
-        public string? Common { get; set; }
     }
 
     public class Currency
@@ -62,7 +59,22 @@ namespace GloboClimaAPI.Models
         public string? Symbol { get; set; }
     }
 
-    public class Flag
+    public class Translations
+    {
+        [JsonPropertyName("por")]
+        public Translation? Por { get; set; }
+    }
+
+    public class Translation
+    {
+        [JsonPropertyName("official")]
+        public string? Official { get; set; }
+
+        [JsonPropertyName("common")]
+        public string? Common { get; set; }
+    }
+
+    public class Flags
     {
         [JsonPropertyName("png")]
         public string? Png { get; set; }
