@@ -20,12 +20,14 @@ namespace GloboClimaAPI.Services
         /// <summary>
         /// Busca clima através do nome de cidade.
         /// </summary>
-        public async Task<Weather?> GetWeatherByCityName(string name)
+        /// <param name="name">O nome da cidade a ser buscado.</param>
+        /// <returns>Retorna o clima da cidade procurada ou exceção.</returns>
+        public async Task<Weather> GetWeatherByCityName(string name)
         {
             try
             {
                 if (string.IsNullOrEmpty(name))
-                    throw new Exception("Não foi digitado nenhuma cidade.");
+                    throw new Exception("O parâmetro nome não contém valor.");
 
                 var token = _configuration["Token:WeatherAPI"];
 
@@ -42,17 +44,17 @@ namespace GloboClimaAPI.Services
 
                 return weather;
             }
-            catch (HttpRequestException httpEx)
+            catch (HttpRequestException)
             {
-                throw new Exception($"Erro na comunicação com a API pública. {httpEx.Message}");
+                throw new Exception("Erro na comunicação com a API externa.");
             }
-            catch (JsonException jsonEx)
+            catch (JsonException)
             {
-                throw new Exception($"Erro ao tratar o retorno da API pública. {jsonEx.Message}");
+                throw new Exception("Erro ao processar os dados retornados pela API externa.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception($"Erro inesperado. {ex.Message}");
+                throw new Exception("Erro inesperado ao buscar país.");
             }
         }
     }

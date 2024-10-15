@@ -25,8 +25,10 @@ namespace GloboClimaAPI.Controllers
         }
 
         /// <summary>
-        /// Busca clima através do nome de cidade.
+        /// Busca clima através do nome da cidade.
         /// </summary>
+        /// <param name="name">O nome da cidade a ser buscado.</param>
+        /// <returns>Retorna o clima da cidade procurada ou um código de status apropriado.</returns>
         [HttpGet("/city/{name}")]
         public async Task<IActionResult> GetWeatherByCityName(string name)
         {
@@ -37,7 +39,7 @@ namespace GloboClimaAPI.Controllers
                 if (weather == null)
                 {
                     _logger.LogWarning($"Clima da cidade não encontrado. Cidade: {name}");
-                    return NotFound();
+                    return NotFound("Cidade não encontrada.");
                 }
 
                 _logger.LogInformation($"Requisição efetuada com sucesso. Cidade: {name}");
@@ -45,7 +47,7 @@ namespace GloboClimaAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Exceção: {ex.Message}");
+                _logger.LogError($"{ex.Message}. Cidade: {name}");
                 return StatusCode(500, ex.Message);
             }
         }
@@ -59,7 +61,7 @@ namespace GloboClimaAPI.Controllers
         {
             try
             {
-                return Ok();
+                throw new NotImplementedException();
             }
             catch (Exception ex)
             {
@@ -77,7 +79,7 @@ namespace GloboClimaAPI.Controllers
         {
             try
             {
-                return Ok();
+                throw new NotImplementedException();
             }
             catch (Exception ex)
             {
@@ -95,7 +97,7 @@ namespace GloboClimaAPI.Controllers
         {
             try
             {
-                return Ok();
+                throw new NotImplementedException();
             }
             catch (Exception ex)
             {
@@ -113,7 +115,7 @@ namespace GloboClimaAPI.Controllers
         {
             try
             {
-                return Ok();
+                throw new NotImplementedException();
             }
             catch (Exception ex)
             {

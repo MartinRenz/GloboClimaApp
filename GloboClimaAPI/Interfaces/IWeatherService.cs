@@ -4,6 +4,6 @@ namespace GloboClimaAPI.Interfaces
 {
     public interface IWeatherService
     {
-        Task<Weather?> GetWeatherByCityName(string name);
+        Task<Weather> GetWeatherByCityName(string name);
     }
 }

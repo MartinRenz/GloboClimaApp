@@ -40,15 +40,15 @@ namespace GloboClimaAPI.Services
             }
             catch (HttpRequestException)
             {
-                throw new Exception($"Erro na comunicação com a API externa.");
+                throw new Exception("Erro na comunicação com a API externa.");
             }
             catch (JsonException)
             {
-                throw new Exception($"Erro ao processar os dados retornados pela API externa.");
+                throw new Exception("Erro ao processar os dados retornados pela API externa.");
             }
             catch (Exception)
             {
-                throw new Exception($"Erro inesperado ao buscar país.");
+                throw new Exception("Erro inesperado ao buscar país.");
             }
         }
 
