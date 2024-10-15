@@ -29,6 +29,7 @@ namespace GloboClimaAPI.Controllers
         /// </summary>
         /// <param name="name">O nome da cidade a ser buscado.</param>
         /// <returns>Retorna o clima da cidade procurada ou um código de status apropriado.</returns>
+        [AllowAnonymous]
         [HttpGet("/city/{name}")]
         public async Task<IActionResult> GetWeatherByCityName(string name)
         {
@@ -55,8 +56,8 @@ namespace GloboClimaAPI.Controllers
         /// <summary>
         /// Busca todos os climas favoritos.
         /// </summary>
-        [HttpGet("/city/favorite")]
         [Authorize]
+        [HttpGet("/city/favorite")]
         public async Task<IActionResult> GetAllFavoriteWeather()
         {
             try
@@ -73,8 +74,8 @@ namespace GloboClimaAPI.Controllers
         /// <summary>
         /// Busca um clima favorito.
         /// </summary>
-        [HttpGet("/city/favorite/{id}")]
         [Authorize]
+        [HttpGet("/city/favorite/{id}")]
         public async Task<IActionResult> GetFavoriteWeather(int id)
         {
             try
@@ -91,8 +92,8 @@ namespace GloboClimaAPI.Controllers
         /// <summary>
         /// Salva um novo clima favorito.
         /// </summary>
-        [HttpPost("/city/favorite")]
         [Authorize]
+        [HttpPost("/city/favorite")]
         public async Task<IActionResult> SaveFavoriteWeather([FromBody] Weather body)
         {
             try
@@ -109,8 +110,8 @@ namespace GloboClimaAPI.Controllers
         /// <summary>
         /// Deleta um clima favorito.
         /// </summary>
-        [HttpDelete("/city/favorite/{id}")]
         [Authorize]
+        [HttpDelete("/city/favorite/{id}")]
         public async Task<IActionResult> DeleteFavoriteWeather(int id)
         {
             try

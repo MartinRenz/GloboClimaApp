@@ -29,6 +29,7 @@ namespace GloboClimaAPI.Controllers
         /// </summary>
         /// <param name="name">O nome do país a ser buscado.</param>
         /// <returns>Retorna o país encontrado ou um código de status apropriado.</returns>
+        [AllowAnonymous]
         [HttpGet("/name/{name}")]
         public async Task<IActionResult> GetCountryByName(string name)
         {
@@ -57,6 +58,7 @@ namespace GloboClimaAPI.Controllers
         /// </summary>
         /// <param name="code">O código do país a ser buscado.</param>
         /// <returns>Retorna o país encontrado ou um código de status apropriado.</returns>
+        [AllowAnonymous]
         [HttpGet("/code/{code}")]
         public async Task<IActionResult> GetCountryByCode(string code)
         {
@@ -84,8 +86,8 @@ namespace GloboClimaAPI.Controllers
         /// Busca todos os países favoritos.
         /// </summary>
         /// <returns>Retorna todos os países favoritos do usuário.</returns>
-        [HttpGet("/favorite")]
         [Authorize]
+        [HttpGet("/favorite")]
         public async Task<IActionResult> GetAllFavoriteCountries()
         {
             try
@@ -103,8 +105,8 @@ namespace GloboClimaAPI.Controllers
         /// Busca um país favorito.
         /// </summary>
         /// <returns>Retorna todos os países favoritos do usuário.</returns>
-        [HttpGet("/favorite/{id}")]
         [Authorize]
+        [HttpGet("/favorite/{id}")]
         public async Task<IActionResult> GetFavoriteCountry(int id)
         {
             try
@@ -121,8 +123,8 @@ namespace GloboClimaAPI.Controllers
         /// <summary>
         /// Salva um novo país favorito.
         /// </summary>
-        [HttpPost("/favorite")]
         [Authorize]
+        [HttpPost("/favorite")]
         public async Task<IActionResult> SaveFavoriteCountry([FromBody] Country body)
         {
             try
@@ -139,8 +141,8 @@ namespace GloboClimaAPI.Controllers
         /// <summary>
         /// Deleta um país favorito.
         /// </summary>
-        [HttpDelete("/favorite/{id}")]
         [Authorize]
+        [HttpDelete("/favorite/{id}")]
         public async Task<IActionResult> DeleteFavoriteCountry(int id)
         {
             try

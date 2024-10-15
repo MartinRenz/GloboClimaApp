@@ -2,6 +2,9 @@
 using Amazon.DynamoDBv2.DocumentModel;
 using GloboClimaAPI.Interfaces;
 using GloboClimaAPI.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -53,12 +56,19 @@ namespace GloboClimaAPI.Services
                 var search = _dbContext.ScanAsync<UserDbModel>(conditions);
                 var users = await search.GetNextSetAsync();
 
-                if (users.Count == 0)
+                if (users.Count == 0 || !users.Any())
                 {
                     throw new Exception("Usuário não encontrado.");
                 }
 
-                return GenerateJwtToken(login, passwordHash);
+                var user = users.FirstOrDefault();
+
+                if (string.IsNullOrEmpty(user?.Id) || string.IsNullOrEmpty(user?.Login))
+                {
+                    throw new Exception("Usuário não encontrado.");
+                }
+
+                return GenerateJwtToken(user.Id, user.Login);
             }
             catch (HttpRequestException)
             {
@@ -119,7 +129,7 @@ namespace GloboClimaAPI.Services
 
                 await _dbContext.SaveAsync(newUser);
 
-                return GenerateJwtToken(login, passwordHash);
+                return GenerateJwtToken(newUser.Id, newUser.Login);
             }
             catch (HttpRequestException)
             {
@@ -154,10 +164,33 @@ namespace GloboClimaAPI.Services
             }
         }
 
-        private string GenerateJwtToken(string login, string password)
+        public string GenerateJwtToken(
+            string id, 
+            string username
+        )
         {
-            // Realizar tratamento para gerar o JWT. No momento, só retorna string aleatória.
-            return _configuration["Token:PasswordHash"];
+            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+            var issuer = _configuration["Jwt:Issuer"];
+            var audience = _configuration["Jwt:Audience"];
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var claims = new[]
+            {
+            new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(JwtRegisteredClaimNames.Jti, id)
+        };
+
+            var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: issuer,
+                audience: audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(1),
+                signingCredentials: credentials
+            );
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }
