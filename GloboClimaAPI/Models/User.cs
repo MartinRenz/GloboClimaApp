@@ -1,17 +1,12 @@
-﻿using Amazon.DynamoDBv2.DataModel;
+﻿using System.Text.Json.Serialization;
 
 namespace GloboClimaAPI.Models
 {
-    [DynamoDBTable("user")]
     public class User
     {
-        [DynamoDBHashKey("id")]
-        public string? Id { get; set; }
-
-        [DynamoDBProperty("login")]
+        [JsonPropertyName("login")]
         public string? Login { get; set; }
-
-        [DynamoDBProperty("password")]
+        [JsonPropertyName("password")]
         public string? Password { get; set; }
     }
 }

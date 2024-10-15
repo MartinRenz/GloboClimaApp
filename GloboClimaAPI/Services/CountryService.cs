@@ -25,7 +25,7 @@ namespace GloboClimaAPI.Services
             try
             {
                 if (string.IsNullOrEmpty(name))
-                    throw new ArgumentException("O parâmetro nome não contém valor.");
+                    throw new ArgumentException("Parâmetro Nome não contém valor.");
 
                 var response = await _httpClient.GetAsync($"{baseUrl}name/{name}");
 

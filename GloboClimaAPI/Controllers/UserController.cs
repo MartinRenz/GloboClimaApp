@@ -26,8 +26,10 @@ namespace GloboClimaAPI.Controllers
         /// <summary>
         /// Login do usuário.
         /// </summary>
+        /// <param name="req">Objeto contendo informações do login do usuário.</param>
+        /// <returns>Retorna um Bearer Token ou um código de status apropriado.</returns>
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserRequest req)
+        public async Task<IActionResult> Login([FromBody] User req)
         {
             try 
             {
@@ -52,8 +54,10 @@ namespace GloboClimaAPI.Controllers
         /// <summary>
         /// Cadastro do usuário.
         /// </summary>
+        /// <param name="req">Objeto contendo informações do login do usuário.</param>
+        /// <returns>Retorna um Bearer Token ou um código de status apropriado.</returns>
         [HttpPost("subscribe")]
-        public async Task<IActionResult> Subscribe([FromBody] UserRequest req)
+        public async Task<IActionResult> Subscribe([FromBody] User req)
         {
             try
             {

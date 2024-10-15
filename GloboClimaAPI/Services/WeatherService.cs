@@ -27,7 +27,7 @@ namespace GloboClimaAPI.Services
             try
             {
                 if (string.IsNullOrEmpty(name))
-                    throw new Exception("O parâmetro nome não contém valor.");
+                    throw new ArgumentException("Parâmetro Nome não contém valor.");
 
                 var token = _configuration["Token:WeatherAPI"];
 

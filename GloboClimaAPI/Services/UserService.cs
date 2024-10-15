@@ -25,15 +25,21 @@ namespace GloboClimaAPI.Services
         /// <summary>
         /// Login do usuário.
         /// </summary>
-        public async Task<string> LoginAsync(string login, string password)
+        /// <param name="login">Login do usuário.</param>
+        /// <param name="password">Senha do usuário.</param>
+        /// <returns>Retorna um Bearer Token ou exceção.</returns>
+        public async Task<string> LoginAsync(
+            string login, 
+            string password
+        )
         {
             try
             {
                 if (string.IsNullOrEmpty(login))
-                    throw new Exception("Não foi digitado o login.");
+                    throw new ArgumentException("Parâmetro Login não contém valor.");
 
                 if (string.IsNullOrEmpty(password))
-                    throw new Exception("Não foi digitado a senha.");
+                    throw new ArgumentException("Parâmetro Password não contém valor.");
 
                 var passwordHash = GeneratePasswordHash(password);
 
@@ -44,7 +50,7 @@ namespace GloboClimaAPI.Services
                 };
 
                 // Executa a operação de scan com os filtros aplicados
-                var search = _dbContext.ScanAsync<User>(conditions);
+                var search = _dbContext.ScanAsync<UserDbModel>(conditions);
                 var users = await search.GetNextSetAsync();
 
                 if (users.Count == 0)
@@ -54,62 +60,86 @@ namespace GloboClimaAPI.Services
 
                 return GenerateJwtToken(login, passwordHash);
             }
-            catch (HttpRequestException httpEx)
+            catch (HttpRequestException)
             {
-                throw new Exception($"Erro na comunicação com a API pública. {httpEx.Message}");
+                throw new Exception("Erro na comunicação com a base de dados.");
             }
-            catch (JsonException jsonEx)
+            catch (JsonException)
             {
-                throw new Exception($"Erro ao tratar o retorno da API pública. {jsonEx.Message}");
+                throw new Exception("Erro ao tratar o retorno da base de dados.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception($"Erro inesperado. {ex.Message}");
+                throw new Exception("Erro inesperado.");
             }
         }
 
         /// <summary>
         /// Cadastro do usuário.
         /// </summary>
-        public async Task<string> SubscribeAsync(string login, string password)
+        /// <param name="login">Login do usuário.</param>
+        /// <param name="password">Senha do usuário.</param>
+        /// <returns>Retorna um Bearer Token ou exceção.</returns>
+        public async Task<string> SubscribeAsync(
+            string login, 
+            string password
+        )
         {
-            if (string.IsNullOrEmpty(login))
-                throw new Exception("Não foi digitado o login.");
-
-            if (string.IsNullOrEmpty(password))
-                throw new Exception("Não foi digitado a senha.");
-
-            var passwordHash = GeneratePasswordHash(password);
-
-            var existingUserCondition = new List<ScanCondition>
+            try 
             {
-                new ScanCondition("Login", ScanOperator.Equal, login)
-            };
+                if (string.IsNullOrEmpty(login))
+                    throw new ArgumentException("Parâmetro Login não contém valor.");
 
-            var search = _dbContext.ScanAsync<User>(existingUserCondition);
-            var existingUsers = await search.GetNextSetAsync();
+                if (string.IsNullOrEmpty(password))
+                    throw new ArgumentException("Parâmetro Password não contém valor.");
 
-            if (existingUsers.Count > 0)
-            {
-                throw new Exception("Login já existe no sistema. Escolha um diferente.");
+                var passwordHash = GeneratePasswordHash(password);
+
+                // Validação se usuário já existe.
+                var existingUserCondition = new List<ScanCondition>
+                {
+                    new ScanCondition("Login", ScanOperator.Equal, login)
+                };
+
+                var search = _dbContext.ScanAsync<UserDbModel>(existingUserCondition);
+                var existingUsers = await search.GetNextSetAsync();
+
+                if (existingUsers.Count > 0)
+                {
+                    throw new Exception("Login já existe no sistema. Escolha um diferente.");
+                }
+
+                // Criação do usuário.
+                var newUser = new UserDbModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Login = login,
+                    Password = passwordHash
+                };
+
+                await _dbContext.SaveAsync(newUser);
+
+                return GenerateJwtToken(login, passwordHash);
             }
-
-            // Criação do usuário
-            var newUser = new User
+            catch (HttpRequestException)
             {
-                Id = Guid.NewGuid().ToString(),
-                Login = login,
-                Password = passwordHash
-            };
-
-            await _dbContext.SaveAsync(newUser);
-
-            return GenerateJwtToken(login, passwordHash);
+                throw new Exception("Erro na comunicação com a base de dados.");
+            }
+            catch (JsonException)
+            {
+                throw new Exception("Erro ao tratar o retorno da base de dados.");
+            }
+            catch (Exception)
+            {
+                throw new Exception("Erro inesperado.");
+            }
         }
 
         /// <summary>
-        /// Adiciona hash na senha.
+        /// Adiciona hash na senha do usuário utilizando SHA256.
         /// </summary>
+        /// <param name="password">Senha do usuário.</param>
+        /// <returns>Retorna a senha como hash.</returns>
         private string GeneratePasswordHash(string password)
         {
             using (var sha256 = SHA256.Create())
